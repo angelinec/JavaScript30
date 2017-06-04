@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Speed Scrubber</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="wrapper">
+    <video class="flex" width="765" height="430" src="https://www.dropbox.com/s/nf6jfkwck1glsyo/12%20-%20flex-wrapping-and-columns.mp4?dl=1" loop controls></video>
+    <div class="speed">
+      <div class="speed-bar">1×</div>
+    </div>
+  </div>
+
+<script>
+	const speed = document.querySelector('.speed');
+	const bar = document.querySelector('.speed-bar');
+	const video = document.querySelector('.flex');
+
+	/*changes video speed by moving cursor along speed bar and
+	  reflect speed value on speed bar
+	*/
+	function controlSpeed(e) {
+		const y = e.pageY - this.offsetTop; //grab cursor's current y position on bar
+		const percent = y / this.offsetHeight; // convert bar's current height to %
+		const min = 0.4; //min speed
+		const max = 4;	//max speed
+		const height = Math.round(percent * 100) + '%'; //set dynamic bar height
+		const playbackRate = percent * (max - min) + min; //set playbackRate based on bar's current height & min-max limit
+		bar.style.height = height;
+		bar.textContent = playbackRate.toFixed(2) + 'x'; //round to 2 dec
+		video.playbackRate = playbackRate; //set playback rate according to speed bar
+	}
+
+	speed.addEventListener('mousemove', controlSpeed);
+
+</script>
+</body>
+</html>

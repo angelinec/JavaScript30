@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after { box-sizing: inherit; }
+
+  div {
+    width:100%;
+    padding:100px;
+  }
+
+  .one {
+    background: thistle;
+  }
+
+  .two {
+    background:mistyrose;
+  }
+
+  .three {
+    background:coral;
+  }
+</style>
+
+<button></button>
+<script>
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+
+  function logText(e) {
+    console.log(this.classList.value);
+    e.stopPropagation(); //prevent event from bubbling up - three, two, one
+  }
+
+  divs.forEach(div => div.addEventListener('click', logText, {
+    capture: false // false by default - use it with e.stopPropagation(); true will run the function from top to down on elements - bubbling down, not up (one, two, three)
+  }));
+
+  button.addEventListener('click', () => {
+    console.log('Click!');
+  },{
+    once: true //listen to event only once. Unbind from listener after first event is fired.
+  });
+
+</script>
+</body>
+</html>
